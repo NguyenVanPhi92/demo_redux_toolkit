@@ -48,9 +48,7 @@ export default function CreatePost() {
                     setFormData(initialState)
                     if (errorForm) setErrorForm(null)
                 })
-                .catch(error => {
-                    setErrorForm(error.error)
-                })
+                .catch(error => setErrorForm(error.error))
         } else {
             try {
                 // create post, khi dùng với asyncThunk thì phài dùng kèm unwrap or unwrapResult
@@ -60,15 +58,12 @@ export default function CreatePost() {
                 if (errorForm) setErrorForm(null)
             } catch (error: any) {
                 console.log(error.error)
-
                 setErrorForm(error.error)
             }
         }
     }
 
-    const handleCancelEditingPost = () => {
-        dispatch(cancelEditingPost())
-    }
+    const handleCancelEditingPost = () => dispatch(cancelEditingPost())
 
     return (
         <form onSubmit={handleSubmit} onReset={handleCancelEditingPost}>

@@ -22,8 +22,8 @@ const initialState: BlogState = {
     currentRequestId: undefined
 }
 
-// tạo các action
-// dùng createAsyncthunk để xử lý event bất đồng bộ
+// Tạo các action
+// Dùng createAsyncthunk để xử lý event bất đồng bộ
 export const getPostList = createAsyncThunk('blog/getPostList', async (_, thunkApi) => {
     const response = await http.get<Post[]>('posts', {
         signal: thunkApi.signal // loại bỏ 2 lần call api của trick mode => chỉ còn 1 lần call api
@@ -77,12 +77,12 @@ export const deletePost = createAsyncThunk('blog/deletePost', async (postId: str
     return response.data
 })
 
-// tạo slice chứa reducer và dispatch action
+// Tạo Slice
 const blogSlice = createSlice({
     name: 'blog',
     initialState,
-    // reducers -> map object
-    // reducers chỉ sử lý action đồng bộ
+    // reducers -> kiểu map object/sử lý action đồng bộ
+    // reducers
     reducers: {
         startEditingPost: (state, action: PayloadAction<string>) => {
             const postId = action.payload
@@ -95,10 +95,10 @@ const blogSlice = createSlice({
         }
     },
 
-    // extraReducers -> builder callback
-    // xử lý action không đồng bộ => chuyên dùng cho TS
+    // extraReducers -> kiểu builder callback/xử lý action không đồng bộ
     extraReducers(builder) {
         builder
+            //addCase -> xử lý action bất đồng bộ
             .addCase(getPostList.fulfilled, (state, action) => {
                 state.postList = action.payload
             })
@@ -148,7 +148,9 @@ const blogSlice = createSlice({
     }
 })
 
-export const { cancelEditingPost, startEditingPost } = blogSlice.actions // đưa ra các action tron reducer
-const blogReducer = blogSlice.reducer // đưa ra reducer
+// xuất ra các action tron reducer
+export const { cancelEditingPost, startEditingPost } = blogSlice.actions
+// xuất ra reducer để đưa vào store
+const blogReducer = blogSlice.reducer
 
 export default blogReducer
